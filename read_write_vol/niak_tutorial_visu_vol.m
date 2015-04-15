@@ -7,29 +7,8 @@ if ~psom_exist('single_subject_cambridge_preprocessed_nii')
     psom_clean('single_subject_cambridge_preprocessed_nii.zip')
 end
 
-%% Reading volumes
-
-% To read the data, use niak_read_vol
+% read the data
 [hdr,vol] = niak_read_vol('single_subject_cambridge_preprocessed_nii/fmri_sub00156_session1_rest.nii.gz');
-
-% The hdr output is a structure with a full description of the volume
-% hdr.info contains some basic info found in both nifti and minc
-hdr.info
-
-% For example, the voxel size is found in 
-hdr.info.voxel_size
-
-% All the detailed information are contained in hdr.details
-% This field will vary based on the format of the original volume
-% Here, for nifti, each field corresponds to a nifti field
-hdr.details
-
-% The vol output is the data itself, in either a 3D or a 4D array
-% Any normalization (min/max) has been applied
-% It is in voxel space however, and no spatial transformation has been applied
-size(vol)
-
-%% Visualization of volumes
 
 % this command visualizes the third volume, and set the min/max of the visualization
 opt_v.vol_limits = [100 1200];
@@ -38,4 +17,9 @@ print('fig_montage.png','-dpng')
 
 % It is also possible to run a little movie
 % here I selected only one slice
-niak_visu_motion
+niak_visu_motion(vol(:,:,20,:),opt_v)
+
+% It is possible to use regular matlab/octave commands to plot the activity
+% not the use of squeeze to reshape data as vectors
+plot(squeeze(vol(30,30,20,:)))
+print('fig_plot.png','-dpng')
