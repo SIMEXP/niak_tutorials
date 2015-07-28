@@ -1,9 +1,0 @@
-MNI Transform File
-%Mon Jul 27 15:29:03 2015>>> minctracc -clobber -xcorr -lsq9 -step 4 4 4 -simplex 2 -tol 0.004 -transformation /localscratch/37014211.gm-1r16-n04.guillimin.clumeq.ca/niak_bestlinreg.pl-HALETwd6/Sanat_subject2_nuc_nativet1_3.xfm -source_mask /localscratch/37014211.gm-1r16-n04.guillimin.clumeq.ca/niak_tmp_t1_preprocess_subject2_332136529_anat_subject2t1_preprocess/anat_subject2_mask_native.mnc -model_mask /sb/project/gsf-624-aa/quarantaine/niak-boss-0.13.0/template/mni-models_icbm152-nl-2009-1.0/mni_icbm152_t1_tal_nlin_sym_09a_mask.mnc.gz /localscratch/37014211.gm-1r16-n04.guillimin.clumeq.ca/niak_bestlinreg.pl-HALETwd6/Sanat_subject2_nuc_nativet1_4_dxyz.mnc /localscratch/37014211.gm-1r16-n04.guillimin.clumeq.ca/niak_bestlinreg.pl-HALETwd6/Tmni_icbm152_t1_tal_nlin_sym_09a_4_dxyz.mnc /localscratch/37014211.gm-1r16-n04.guillimin.clumeq.ca/niak_bestlinreg.pl-HALETwd6/Sanat_subject2_nuc_nativet1_4.xfm
-%(mni_autoreg 0.99.60)
-
-Transform_Type = Linear;
-Linear_Transform =
- 1.01530122756958 -0.0246202684938908 -0.0182385370135307 -0.877941966056824
- 0.0284814983606339 0.95574426651001 0.295342743396759 -16.4304161071777
- 0.011839366517961 -0.350033342838287 1.13158404827118 7.67614459991455;
