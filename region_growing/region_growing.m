@@ -1,6 +1,7 @@
 %%% demo REGION GROWING script
 
 clear all
+niak_gb_vars
 path_data = [pwd filesep];
 
 niak_wget('target_test_niak_mnc1'); % download demo data set 
@@ -11,10 +12,7 @@ niak_wget('target_test_niak_mnc1'); % download demo data set
 opt_g.min_nb_vol = 20;     % The minimum number of volumes for an fMRI dataset to be included. This option is useful when scrubbing is used, and the resulting time series may be too short.
 opt_g.min_xcorr_func = 0; % The minimum xcorr score for an fMRI dataset to be included. This metric is a tool for quality control which assess the quality of non-linear coregistration of functional images in stereotaxic space. Manual inspection of the values during QC is necessary to properly set this threshold.
 opt_g.min_xcorr_anat = 0; % The minimum xcorr score for an fMRI dataset to be included. This metric is a tool for quality control which assess the quality of non-linear coregistration of the anatomical image in stereotaxic space. Manual inspection of the values during QC is necessary to properly set this threshold.
-%opt_g.filter.session = {'session1'}; % Set a filter e.g. Grab only runs labeled 'session1' in this case
-files_in.data = niak_grab_fmri_preprocess([path_data 'target_test_niak_mnc1-0.13.0/demoniak_preproc/'],opt_g).data; % Replace the folder by the path where the results of the fMRI preprocessing pipeline were stored. 
-%opt_g.exclude_subject = {'sub1','sub2'}; % If for whatever reason some subjects have to be excluded that were not caught by the quality control metrics, it is possible to manually specify their IDs here.
-
+files_in.data = niak_grab_fmri_preprocess([path_data 'target_test_niak_mnc1-' gb_niak_target_test '/demoniak_preproc/'],opt_g).data; % Replace the folder by the path where the results of the fMRI preprocessing pipeline were stored. 
 
 %%%%%%%%%%%%%
 %% Options %%
