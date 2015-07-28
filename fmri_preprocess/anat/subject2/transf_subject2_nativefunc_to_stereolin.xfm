@@ -1,0 +1,8 @@
+MNI Transform File
+%Mon Jul 27 16:07:49 2015>>> xfminvert /localscratch/37016011.gm-1r16-n04.guillimin.clumeq.ca/niak_tmp_anat2func_subject2_927471418_coregister/transf_est.xfm /sb/project/gsf-624-aa/database/tutorial/fmri_preprocess/anat/subject2/transf_subject2_nativefunc_to_stereolin.xfm
+
+Transform_Type = Linear;
+Linear_Transform =
+ 1.01507468873369 -0.0332408126308124 -0.0171416040128621 1.67335139974529
+ 0.0363452895565864 0.952183718077807 0.305795378921661 -18.8164100295379
+ 0.00717481275973853 -0.36244005226388 1.12771089571772 8.74720331897558;
