@@ -1,60 +1,69 @@
 
-%% Fetch a lightweight dataset
 clear
-niak_gb_vars
 niak_wget('data_test_niak_mnc1');
 
-%% Setting input/output files
-
-% All data locations are relative to the current folder
 path_data = [pwd filesep];
 % Structural scan
-files_in.subject1.anat                = [path_data 'data_test_niak_mnc1/anat_subject1.mnc.gz'];       
+files_in.subject1.anat = ...
+    [path_data 'data_test_niak_mnc1/anat_subject1.mnc.gz'];       
 % fMRI run 1
-files_in.subject1.fmri.session1.motor = [path_data 'data_test_niak_mnc1/func_motor_subject1.mnc.gz']; 
-
-%% Pipeline options
+files_in.subject1.fmri.session1.motor = ...
+    [path_data 'data_test_niak_mnc1/func_motor_subject1.mnc.gz'];
 
 % Where to store the results
-opt.folder_out  = [path_data 'fmri_preprocess/'];    
+opt.folder_out  = [path_data 'fmri_preprocess/'];
 
-%% Pipeline manager 
-% See http://psom.simexp-lab.org/psom_configuration.html for more details on PSOM configuration
-% Use up to four threads
-opt.psom.max_queued = 4;       
+% Use up to 2 threads
+opt.psom.max_queued = 2;
 
-%% Slice timing correction (niak_brick_slice_timing)
 opt.slice_timing.type_acquisition = 'interleaved ascending'; 
 opt.slice_timing.type_scanner     = 'Bruker';                
-opt.slice_timing.delay_in_tr      = 0;                       
- 
-%% resampling in stereotaxic space
+opt.slice_timing.delay_in_tr      = 0;
+
+% Center the functional volumes on the brain center-of-mass (true/false)
+opt.slice_timing.flag_center = false;
+% Suppress some volumes at the beginning of the run
+opt.slice_timing.suppress_vol = 3;
+
 % The voxel size to use in the stereotaxic space
 opt.resample_vol.voxel_size    = 10;
 
-%% Linear and non-linear fit of the anatomical image in the stereotaxic
-% space (niak_brick_t1_preprocess)
-% Parameter for non-uniformity correction. 200 is a suggested value for 1.5T images, 75 for 3T images. 
-opt.t1_preprocess.nu_correct.arg = '-distance 75'; 
+% Parameter for non-uniformity correction. 
+% 200 is a suggested value for 1.5T images, 
+% 75 for 3T images. 
+opt.t1_preprocess.nu_correct.arg = '-distance 75';
 
-%% Temporal filtering (niak_brick_time_filter)
-% Cut-off frequency for high-pass filtering, or removal of low frequencies (in Hz). 
-% A cut-off of -Inf will result in no high-pass filtering.
+% Cut-off frequency for high-pass filtering, 
+% or removal of low frequencies (in Hz). 
 opt.time_filter.hp = 0.01; 
-% Cut-off frequency for low-pass filtering, or removal of high frequencies (in Hz). 
-% A cut-off of Inf will result in no low-pass filtering.
-opt.time_filter.lp = Inf;  
-
-%% Regression of confounds and scrubbing (niak_brick_regress_confounds)
-% Apply global signal regression          
+% Cut-off frequency for low-pass filtering, 
+% or removal of high frequencies (in Hz). 
+opt.time_filter.lp = 0.1;
+% Remove slow time drifts (true/false)
+opt.regress_confounds.flag_slow = true;
+% Remove high frequencies (true/false)
+opt.regress_confounds.flag_high = false;
+% Apply regression of motion parameters (true/false)
+opt.regress_confounds.flag_motion_params = true;
+% Reduce the dimensionality of motion parameters with PCA (true/false)
+opt.regress_confounds.flag_pca_motion = true;
+% How much variance of motion parameters (with squares) to retain
+opt.regress_confounds.pct_var_explained = 0.95;
+% Apply average white matter signal regression (true/false)         
+opt.regress_confounds.flag_wm = true;
+% Apply average ventricle signal regression (true/false)         
+opt.regress_confounds.flag_vent = true;
+% Apply anat COMPCOR (white matter+ventricles, true/false)
+% We recommend not using FLAG_WM and FLAG_VENT together with FLAG_COMPCOR
+opt.regress_confounds.flag_compcor = false;
+% Apply global signal regression (true/false)         
 opt.regress_confounds.flag_gsc = true; 
+% Apply scrubbing (true/false)
 opt.regress_confounds.flag_scrubbing = true;     
 % The threshold on frame displacement for scrubbing 
-opt.regress_confounds.thre_fd = 0.5;             
+opt.regress_confounds.thre_fd = 0.5;    
 
-%% Spatial smoothing (niak_brick_smooth_vol)
 % Full-width at maximum (FWHM) of the Gaussian blurring kernel, in mm.
-opt.smooth_vol.fwhm      = 6;  
+opt.smooth_vol.fwhm      = 6;
 
-%% Run the fmri_preprocess pipeline 
 niak_pipeline_fmri_preprocess(files_in,opt);
