@@ -67,3 +67,4 @@ opt.regress_confounds.thre_fd = 0.5;
 opt.smooth_vol.fwhm      = 6;
 
 niak_pipeline_fmri_preprocess(files_in,opt);
+% Check the content of fmri_preprocess/logs/PIPE_history.txt to monitor the progress of the pipeline
