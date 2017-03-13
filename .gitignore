@@ -1,0 +1,11 @@
+data_test_niak_mnc1/
+fmri_preprocess/
+.ipynb_checkpoints/
+list_seeds.csv
+connectome
+octave-workspace
+single_subject_cambridge_preprocessed_nii
+template_cambridge_basc_multiscale_mnc_sym
+cobre_lightweight20/
+model_patient.csv
+subtype/
