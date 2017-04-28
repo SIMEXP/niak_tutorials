@@ -1,33 +1,27 @@
 
+% Where to find data
 clear
 path_data = [pwd filesep];
-[status,msg,data_fmri] = niak_wget('cobre_lightweight20_nii');
+path_preprocess = [path_data 'fmri_preprocess'];
 
-file_pheno = [data_fmri.path filesep 'phenotypic_data.tsv.gz'];
-tab = niak_read_csv_cell(file_pheno);
-list_subject = tab(2:end,1);
-files_in = struct;
-for ss = 1:5
-    files_in.data.(list_subject{ss}).sess1.rest = [data_fmri.path filesep 'fmri_' list_subject{ss} '.nii.gz'];
-end
+% That option tells the grabber to prepare files for BASC
+opt_g.type_files = 'rest'; 
 
-%% Prepare the analysis mask
-% load global niak variables
-niak_gb_vars
-% the AAL template in niak
-in.source = [GB_NIAK.path_niak filesep 'template' filesep 'roi_aal_3mm.mnc.gz'];
-% Use fMRI data from the first subject as target
-in.target = files_in.data.(list_subject{1}).sess1.rest;
-% Where to write the resampled mask 
-out = [path_data 'roi_aal_cobre.nii.gz'];
-% resample the data
-niak_brick_resample_vol(in,out);
+% Minimum number of volumes per run - typically aim at 2 mns
+% Shorther here because the test dataset is really small
+opt_g.min_nb_vol = 20;
 
-% Specify the mask of brain areas for the pipeline
-files_in.areas = out;
+% Grab the "motor" run
+opt_g.filter.run = {'motor'}; % Just grab the "motor" runs
+
+% if uncommented, this option would exclude subject1
+% opt_g.exclude_subject = {'subject1'};
+
+% Grab the data
+files_in = niak_grab_fmri_preprocess(path_preprocess,opt_g)
 
 % Where to store the results
-opt.folder_out = [path_data 'basc'];
+opt.folder_out = [path_data 'basc_test_niak'];
 
 % the size of the regions, when they stop growing. 
 opt.region_growing.thre_size = 2000; 
@@ -42,6 +36,8 @@ opt.scales_maps = [];
 opt.stability_tseries.nb_samps = 20;
 % Number of bootstrap samples at the group level. 
 opt.stability_group.nb_samps = 20; 
+
+opt.stability_group.min_subject = 2;
 
 % Generate maps/time series at the individual level
 opt.flag_ind = false;   
@@ -59,3 +55,7 @@ tab
 opt.scales_maps = tab;
 
 niak_pipeline_stability_rest(files_in,opt);
+
+parcel_sc8 = [opt.folder_out filesep 'stability_group' filesep 'sci10_scg7_scf8' filesep 'brain_partition_consensus_group_sci10_scg7_scf8.mnc.gz'];
+[hdr,sc8] = niak_read_vol(parcel_sc8);
+niak_montage(sc8)
