@@ -1,20 +1,20 @@
 
 clear
-niak_wget('data_test_niak_mnc1');
+niak_wget('data_test_niak_nii');
 
 path_data = [pwd filesep];
 % Structural scan subject 1
 files_in.subject1.anat = ...
-    [path_data 'data_test_niak_mnc1/anat_subject1.mnc.gz'];       
+    [path_data 'data_test_niak_nii/anat_subject1.nii.gz'];       
 % fMRI run 1 subject 1
 files_in.subject1.fmri.session1.motor = ...
-    [path_data 'data_test_niak_mnc1/func_motor_subject1.mnc.gz'];
+    [path_data 'data_test_niak_nii/func_motor_subject1.nii.gz'];
 % Structural scan subject 2
 files_in.subject2.anat = ...
-    [path_data 'data_test_niak_mnc1/anat_subject2.mnc.gz'];       
+    [path_data 'data_test_niak_nii/anat_subject2.nii.gz'];       
 % fMRI run 1 subject 2
 files_in.subject2.fmri.session1.motor = ...
-    [path_data 'data_test_niak_mnc1/func_motor_subject2.mnc.gz'];
+    [path_data 'data_test_niak_nii/func_motor_subject2.nii.gz'];
 
 % Where to store the results
 opt.folder_out  = [path_data 'fmri_preprocess/'];
