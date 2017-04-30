@@ -56,6 +56,7 @@ opt.scales_maps = tab;
 
 niak_pipeline_stability_rest(files_in,opt);
 
-parcel_sc8 = [opt.folder_out filesep 'stability_group' filesep 'sci10_scg7_scf8' filesep 'brain_partition_consensus_group_sci10_scg7_scf8.mnc.gz'];
+path_sc8 = [opt.folder_out filesep 'stability_group' filesep 'sci10_scg7_scf8' filesep];
+parcel_sc8 =  [path_sc8 'brain_partition_consensus_group_sci10_scg7_scf8.nii.gz'];
 [hdr,sc8] = niak_read_vol(parcel_sc8);
 niak_montage(sc8)
