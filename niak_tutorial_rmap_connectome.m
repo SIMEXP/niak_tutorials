@@ -63,3 +63,16 @@ opt_v = struct;
 opt_v.vol_limits = [0.4 1];
 opt_v.type_color = 'hot_cold';
 niak_montage(rmap_dmn_40003,opt_v)
+
+file_connectome_40003   = [opt.folder_out filesep 'connectomes' filesep 'connectome_rois_40003.mat'];
+data = load(file_connectome_40003);
+
+size(data.conn)
+conn = niak_lvec2mat(data.conn);
+size(conn)
+
+data.ind_roi
+
+niak_visu_matrix(conn)
+
+files = niak_grab_connectome(opt.folder_out)
